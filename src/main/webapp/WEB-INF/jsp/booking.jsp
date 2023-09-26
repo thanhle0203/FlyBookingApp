@@ -114,6 +114,9 @@ function displayFields(selectId) {
     let index = selectId.replace("idType", ""); // Extract index from the id
 
     // Hide all related fields first
+    $(".related-fields").hile();
+
+    // Show only the fields related to the selected value
     $("#" + selectedValue + index).show();
 }
 </script>

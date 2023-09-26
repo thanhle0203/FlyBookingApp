@@ -20,7 +20,7 @@ public class ViewController {
 	@Autowired
 	private FlightService flightService;
 	
-    @GetMapping("/homepage")
+    @GetMapping("/")
     public String homepage() {
         return "homepage";
     }
