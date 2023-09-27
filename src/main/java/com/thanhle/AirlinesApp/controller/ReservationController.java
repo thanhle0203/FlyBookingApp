@@ -2,6 +2,7 @@ package com.thanhle.AirlinesApp.controller;
 
 import com.thanhle.AirlinesApp.domain.Flight;
 import com.thanhle.AirlinesApp.domain.Passenger;
+import com.thanhle.AirlinesApp.domain.PassengerList;
 import com.thanhle.AirlinesApp.domain.Reservation;
 import com.thanhle.AirlinesApp.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/reservations")
@@ -38,10 +40,18 @@ public class ReservationController {
     @PostMapping
     public ResponseEntity<Reservation> addReservation(
         @RequestParam Long flightId,
-        @RequestParam int numOfPassengers
+        @RequestParam int numOfPassengers,
+        @RequestBody PassengerList passengerList 
     ) {
         try {
-            Reservation savedReservation = reservationService.createReservation(flightId, numOfPassengers);
+        	// Log the incoming data
+            System.out.println("flightId: " + flightId);
+            System.out.println("numOfPassengers: " + numOfPassengers);
+            System.out.println("passengerForm: " + passengerList);
+            
+            List<Passenger> passengers = passengerList.getPassengers();
+            
+            Reservation savedReservation = reservationService.createReservation(flightId, numOfPassengers, passengers);
             return new ResponseEntity<>(savedReservation, HttpStatus.CREATED);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);  // handle exception appropriately

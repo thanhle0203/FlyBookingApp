@@ -65,6 +65,8 @@ public class ReservationServiceImpl implements ReservationService {
     }
     */
     
+    /*
+    
     @Override
     @Transactional 
     public Reservation createReservation(Long flightId, int numOfPassengers) {
@@ -80,6 +82,43 @@ public class ReservationServiceImpl implements ReservationService {
         for (int i = 0; i < numOfPassengers; i++) {
             Passenger passenger = new Passenger();
             // Set any necessary passenger information
+            passenger.setFname(null);
+            passengers.add(passenger);
+        }
+        
+        // Ensure all passengers are persisted
+        List<Passenger> persistedPassengers = passengerRepository.saveAll(passengers);
+
+        // Create a new Reservation entity
+        Reservation reservation = new Reservation();
+        reservation.setFlight(persistedFlight);
+        reservation.setPassengers(persistedPassengers);
+        
+        return reservationRepository.save(reservation);
+    }
+    */
+    
+    @Override
+    @Transactional 
+    public Reservation createReservation(Long flightId, int numOfPassengers, List<Passenger> passengerForm) {
+        // Look up the flight using the flightId
+        Optional<Flight> optionalFlight = flightRepository.findById(flightId);
+        if (!optionalFlight.isPresent()) {
+            throw new RuntimeException("Flight not found for id - " + flightId);  // Consider using a custom exception
+        }
+        Flight persistedFlight = optionalFlight.get();
+        
+        // Create Passenger objects (assuming a simple Passenger object for this example)
+        List<Passenger> passengers = new ArrayList<>();
+        for (Passenger info : passengerForm) {
+            Passenger passenger = new Passenger();
+            passenger.setFname(info.getFname());
+            passenger.setLname(info.getLname());
+            passenger.setEmail(info.getEmail());
+            passenger.setPhone(info.getPhone());
+            passenger.setGender(info.getGender());
+            passenger.setDateOfBirth(info.getDateOfBirth());
+            passenger.setIdType(info.getIdType());
             passengers.add(passenger);
         }
         
@@ -93,6 +132,8 @@ public class ReservationServiceImpl implements ReservationService {
         
         return reservationRepository.save(reservation);
     }
+
+    
     
     @Override
     public Reservation getReservationByFlightId(Long flightId) {

@@ -11,12 +11,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.thanhle.AirlinesApp.domain.Flight;
 import com.thanhle.AirlinesApp.domain.Passenger;
+import com.thanhle.AirlinesApp.domain.PassengerList;
 import com.thanhle.AirlinesApp.domain.Reservation;
 import com.thanhle.AirlinesApp.service.FlightService;
 import com.thanhle.AirlinesApp.service.ReservationService;
@@ -84,11 +86,12 @@ public class ViewController {
         return "booking";  // This view should be your booking form
     }
     
+    
     @PostMapping("/completeBooking")
-    public String completeBooking(@RequestParam Long flightId, @RequestParam int numOfPassengers, Model model) {
+    public String completeBooking(@PathVariable Long flightId, @PathVariable("numOfPassengers") int numOfPassengers, @ModelAttribute("passengerForm") PassengerList passengerForm, Model model) {
         try {
             // Create a reservation using the provided flightId and numOfPassengers
-            Reservation savedReservation = reservationService.createReservation(flightId, numOfPassengers);
+        	Reservation savedReservation = reservationService.createReservation(flightId, numOfPassengers, passengerForm.getPassengers());
 
             // Add reservation to model
             model.addAttribute("reservation", savedReservation);
@@ -105,10 +108,10 @@ public class ViewController {
     }
     
     @PostMapping("/completeBooking/{flightId}/{numOfPassengers}")
-    public String completeBookings(@PathVariable Long flightId, @PathVariable int numOfPassengers, Model model) {
+    public String completeBookings(@PathVariable Long flightId, @PathVariable("numOfPassengers") int numOfPassengers, @ModelAttribute("passengerForm") PassengerList passengerForm, Model model) {
         try {
             // Create a reservation using the provided flightId and numOfPassengers
-            Reservation savedReservation = reservationService.createReservation(flightId, numOfPassengers);
+            Reservation savedReservation = reservationService.createReservation(flightId, numOfPassengers, passengerForm.getPassengers());
 
             // Add reservation to model
             model.addAttribute("reservation", savedReservation);

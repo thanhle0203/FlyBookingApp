@@ -12,7 +12,8 @@ public interface ReservationService {
     void deleteById(Long id);
 	//Reservation createReservation(Flight flight, List<Passenger> passengers);
 	//Reservation updateReservation(Reservation reservation);
-	Reservation createReservation(Long flightId, int numOfPassengers);
+	//Reservation createReservation(Long flightId, int numOfPassengers);
 	Reservation updateReservation(Reservation reservation);
 	Reservation getReservationByFlightId(Long flightId);
+	Reservation createReservation(Long flightId, int numOfPassengers, List<Passenger> passengerForm);
 }

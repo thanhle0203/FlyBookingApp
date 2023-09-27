@@ -32,26 +32,26 @@
     <!-- Booking Form -->
     <form action="/completeBooking/${flight.flightId}/${numOfPassengers}" method="post" class="bg-white p-4 shadow">
 
-        <c:forEach var="index" begin="1" end="${numOfPassengers}">
+        <c:forEach var="index" begin="1" end="${numOfPassengers}" varStatus="status">
             <h5>Passenger ${index}</h5>
             <div class="form-group">
                 <label for="fname">First Name:</label>
-                <input type="text" name="fname" id="fname" class="form-control" required>
+                <input type="text" name="passengers[${status.index - 1}].fname" id="fname" class="form-control" required>
             </div>
 
             <div class="form-group">
                 <label for="lname">Last Name:</label>
-                <input type="text" name="lname" id="lname" class="form-control" required>
+                <input type="text" name="passengers[${status.index - 1}].lname" id="lname" class="form-control" required>
             </div>
 
             <div class="form-group">
                 <label for="email">Email:</label>
-                <input type="email" name="email" id="email" class="form-control" required>
+                <input type="email" name="passengers[${status.index - 1}].email" id="email" class="form-control" required>
             </div>
 
             <div class="form-group">
                 <label for="phone">Phone:</label>
-                <input type="text" name="phone" id="phone" class="form-control" required>
+                <input type="text" name="passengers[${status.index - 1}].phone" id="phone" class="form-control" required>
             </div>
 
             <div class="form-group">
