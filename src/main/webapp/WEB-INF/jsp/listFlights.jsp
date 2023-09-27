@@ -10,8 +10,12 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
+<jsp:include page="header.jsp" />
 
-<div class="container mt-5">
+
+
+
+<div class="container mt-5 flex-grow-1">
     <h2>Available Flights</h2>
 
     <!-- Display a message if no flights are available -->
@@ -21,7 +25,7 @@
     
     <!-- Display the flights in a table format if there are any -->
     <c:if test="${not empty flights}">
-        <table class="table table-striped">
+        <table class="table table-striped flex-grow-1">
             <thead>
                 <tr>
                     <th>Flight Number</th>
@@ -56,8 +60,10 @@
 </div>
 
 <!-- Optionally include Bootstrap JS and jQuery if needed for additional functionality -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
+
+<jsp:include page="footer.jsp" />
 
 </body>
 </html>

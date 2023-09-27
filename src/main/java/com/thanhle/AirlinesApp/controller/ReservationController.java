@@ -1,5 +1,7 @@
 package com.thanhle.AirlinesApp.controller;
 
+import com.thanhle.AirlinesApp.domain.Flight;
+import com.thanhle.AirlinesApp.domain.Passenger;
 import com.thanhle.AirlinesApp.domain.Reservation;
 import com.thanhle.AirlinesApp.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,13 +34,20 @@ public class ReservationController {
         return new ResponseEntity<>(reservation, HttpStatus.OK);
     }
 
-    // Add a reservation
+ // Add a reservation
     @PostMapping
-    public ResponseEntity<Reservation> addReservation(@RequestBody Reservation reservation) {
-        reservation.setReservationId(null); // Ensure the ID is null for POST (create)
-        reservationService.save(reservation);
-        return new ResponseEntity<>(reservation, HttpStatus.CREATED);
+    public ResponseEntity<Reservation> addReservation(
+        @RequestParam Long flightId,
+        @RequestParam int numOfPassengers
+    ) {
+        try {
+            Reservation savedReservation = reservationService.createReservation(flightId, numOfPassengers);
+            return new ResponseEntity<>(savedReservation, HttpStatus.CREATED);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);  // handle exception appropriately
+        }
     }
+
 
     // Update a reservation
     @PutMapping
@@ -46,7 +55,12 @@ public class ReservationController {
         if (reservationService.findById(reservation.getReservationId()) == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        reservationService.save(reservation);
+        
+     // Extract flight and passengers from the reservation object
+    	//Flight flight = reservation.getFlight();
+    	//List<Passenger> passengers = reservation.getPassengers();
+    	
+        reservationService.updateReservation(reservation);
         return new ResponseEntity<>(reservation, HttpStatus.OK);
     }
 

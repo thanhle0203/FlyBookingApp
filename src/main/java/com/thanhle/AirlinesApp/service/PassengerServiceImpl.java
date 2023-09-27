@@ -12,7 +12,6 @@ import java.util.Optional;
 public class PassengerServiceImpl implements PassengerService {
 
     
-
     @Autowired
     private PassengerRepository passengerRepository;
 
