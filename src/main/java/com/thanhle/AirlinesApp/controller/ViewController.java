@@ -22,6 +22,7 @@ import com.thanhle.AirlinesApp.domain.PassengerList;
 import com.thanhle.AirlinesApp.domain.Reservation;
 import com.thanhle.AirlinesApp.service.FlightService;
 import com.thanhle.AirlinesApp.service.ReservationService;
+import com.thanhle.AirlinesApp.service.UserService;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -38,6 +39,37 @@ public class ViewController {
 	
 	@Autowired
 	private ReservationService reservationService;
+	
+	@Autowired
+    private UserService userService;
+	
+	
+	@GetMapping("/signup") 
+	public String signup() {
+		return "signupForm";
+	}
+	
+	@PostMapping("/signup")
+    public String processSignupForm(@ModelAttribute("signupForm") SignupForm signupForm, BindingResult result) {
+        if (result.hasErrors()) {
+            return "signupForm";
+        }
+
+        User user = new User();
+        // Copy other fields from signupForm to user
+        // ...
+
+        String role = signupForm.getRole();
+        if (role.equals("ADMIN")) {
+            user.setRole(Role.ADMIN);
+        } else {
+            user.setRole(Role.USER);
+        }
+
+        userService.saveUser(user);
+
+        return "redirect:/";
+    }
 	
 	
     @GetMapping("/")

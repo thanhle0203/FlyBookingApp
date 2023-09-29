@@ -32,6 +32,9 @@ public class Passenger {
 	@ManyToMany(mappedBy = "passengers")
 	private List<Reservation> reservations = new ArrayList<>();
 
-	
+	@OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
 
 }

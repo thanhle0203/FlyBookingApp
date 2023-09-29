@@ -31,5 +31,11 @@ public class User {
 	@ManyToMany(fetch=FetchType.EAGER, cascade=CascadeType.PERSIST)
 	//@JsonManagedReference
 	private List<Role> roles = new ArrayList<>();
-
+	
+	
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY, optional = false)
+	private Passenger passenger;
+	
+	
 }
