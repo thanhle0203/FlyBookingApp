@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,9 @@ import com.thanhle.AirlinesApp.domain.Flight;
 import com.thanhle.AirlinesApp.domain.Passenger;
 import com.thanhle.AirlinesApp.domain.PassengerList;
 import com.thanhle.AirlinesApp.domain.Reservation;
+import com.thanhle.AirlinesApp.domain.Role;
+import com.thanhle.AirlinesApp.domain.User;
+import com.thanhle.AirlinesApp.dto.SignupForm;
 import com.thanhle.AirlinesApp.service.FlightService;
 import com.thanhle.AirlinesApp.service.ReservationService;
 import com.thanhle.AirlinesApp.service.UserService;
@@ -30,6 +34,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 
 @Controller
 public class ViewController {
@@ -40,37 +45,36 @@ public class ViewController {
 	@Autowired
 	private ReservationService reservationService;
 	
-	@Autowired
-    private UserService userService;
-	
-	
-	@GetMapping("/signup") 
-	public String signup() {
-		return "signupForm";
-	}
-	
+
+	/*
 	@PostMapping("/signup")
-    public String processSignupForm(@ModelAttribute("signupForm") SignupForm signupForm, BindingResult result) {
-        if (result.hasErrors()) {
-            return "signupForm";
-        }
+	public String signupSubmit(@ModelAttribute SignupForm signupForm, Model model) {
+	    // Validate the form data, if necessary
+	    // ...
 
-        User user = new User();
-        // Copy other fields from signupForm to user
-        // ...
+	    // Create a new User and Role objects from the form data
+	    User newUser = new User();
+	    newUser.setUsername(signupForm.getUsername());
+	    newUser.setPassword(signupForm.getPassword());  // You'll want to hash the password before saving it
+	    newUser.setEmail(signupForm.getEmail());
 
-        String role = signupForm.getRole();
-        if (role.equals("ADMIN")) {
-            user.setRole(Role.ADMIN);
-        } else {
-            user.setRole(Role.USER);
-        }
+	    Role newRole = new Role();
+	    newRole.setRoleName(signupForm.getRole());
+	    newUser.getRoles().add(newRole);
 
-        userService.saveUser(user);
+	    // Save the new User and Role to the database
+	    userService.save(newUser);  // Assumes you have a saveUser method in your UserService
 
-        return "redirect:/";
-    }
+	    // Optionally, add a message to the model to be displayed in the view
+	    model.addAttribute("message", "Signup successful");
+
+	    // Return the name of the view to be displayed
+	    return "signupForm";  // Assumes you have a signupResult.jsp view
+	}
+	*/
+
 	
+  
 	
     @GetMapping("/")
     public String homepage() {

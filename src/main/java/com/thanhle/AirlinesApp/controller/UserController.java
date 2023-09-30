@@ -1,9 +1,12 @@
 package com.thanhle.AirlinesApp.controller;
 
+import com.thanhle.AirlinesApp.domain.Passenger;
+import com.thanhle.AirlinesApp.domain.Role;
 import com.thanhle.AirlinesApp.domain.User;
 import com.thanhle.AirlinesApp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.ResponseEntity.HeadersBuilder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +22,9 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
+    
+   
+    
 
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
@@ -34,9 +40,7 @@ public class UserController {
 
     @GetMapping("/username/{username}")
     public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
-        return userService.findByUsername(username)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        return ((HeadersBuilder<?>) userService.findByUsername(username)).build();
     }
     
    

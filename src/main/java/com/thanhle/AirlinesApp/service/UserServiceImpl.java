@@ -1,7 +1,15 @@
 package com.thanhle.AirlinesApp.service;
 
+import com.thanhle.AirlinesApp.domain.Passenger;
+import com.thanhle.AirlinesApp.domain.Role;
 import com.thanhle.AirlinesApp.domain.User;
+import com.thanhle.AirlinesApp.repository.PassengerRepository;
+import com.thanhle.AirlinesApp.repository.RoleRepository;
 import com.thanhle.AirlinesApp.repository.UserRepository;
+
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,13 +17,22 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
-    private final UserRepository userRepository;
+    
+    @Autowired
+    public PassengerRepository passengerRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    public RoleRepository roleRepository;
+
+    @Autowired
+    public UserRepository userRepository;
+    
+    @Autowired
+    private EntityManager entityManager;
+
+  
 
     @Override
     public List<User> findAll() {
@@ -28,7 +45,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findByUsername(String username) {
+    public User findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
     
@@ -42,4 +59,15 @@ public class UserServiceImpl implements UserService {
     public void deleteById(Long id) {
         userRepository.deleteById(id);
     }
+
+	@Override
+	public User findByEmail(String email) {
+		return userRepository.findByEmail(email);
+	}
+
+
+
+
+
+
 }

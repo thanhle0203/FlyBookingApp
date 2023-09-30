@@ -1,64 +1,68 @@
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
     <title>Sign Up</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
+
 <jsp:include page="header.jsp" />
 
-<h2>Sign Up Form</h2>
+<div class="container">
+    <h2>Sign Up Form</h2>
 
-<form:form action="/signup" modelAttribute="signupForm" method="POST">
+    <form action="/signup" method="POST" class="form-horizontal" modelAttribute="signupForm">
 
-    <!-- User Fields -->
-    <div>
-        <label for="username">Username:</label>
-        <form:input path="username" id="username" required="true"/>
-    </div>
-    <div>
-        <label for="password">Password:</label>
-        <form:password path="password" id="password" required="true"/>
-    </div>
+        <!-- User Fields -->
+        <div class="form-group row">
+            <label for="username" class="col-sm-2 col-form-label">Username:</label>
+            <div class="col-sm-10">
+                <input type="text" name="username" id="username" required="true" class="form-control"/>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="password" class="col-sm-2 col-form-label">Password:</label>
+            <div class="col-sm-10">
+                <input type="password" name="password" id="password" required="true" class="form-control"/>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="email" class="col-sm-2 col-form-label">Email:</label>
+            <div class="col-sm-10">
+                <input type="email" name="email" id="email" class="form-control"/>
+            </div>
+        </div>
 
-    <!-- Passenger Fields -->
-    <div>
-        <label for="fname">First Name:</label>
-        <form:input path="fname" id="fname" />
-    </div>
-    <div>
-        <label for="lname">Last Name:</label>
-        <form:input path="lname" id="lname" />
-    </div>
-    <div>
-        <label for="email">Email:</label>
-        <form:input path="email" id="email" />
-    </div>
-    <div>
-        <label for="phone">Phone:</label>
-        <form:input path="phone" id="phone" />
-    </div>
+        <!-- Role Selection -->
+        <div class="form-group row">
+            <label for="role" class="col-sm-2 col-form-label">Role:</label>
+            <div class="col-sm-10">
+                <select name="role" id="role" class="form-control">
+                    <option value="">Select a role</option>
+                    <option value="USER">User</option>
+                    <option value="ADMIN">Admin</option>
+                </select>
+            </div>
+        </div>
 
-    </div>
+        <!-- Submit Button -->
+        <div class="form-group row">
+            <div class="col-sm-10 offset-sm-2">
+                <button type="submit" class="btn btn-primary">Sign Up</button>
+            </div>
+        </div>
 
-    <!-- Role Selection -->
-    <div>
-        <label for="role">Role:</label>
-        <form:select path="role" id="role">
-            <form:option value="" label="Select a role" />
-            <form:option value="USER" label="User" />
-            <form:option value="ADMIN" label="Admin" />
-        </form:select>
-    </div>
+    </form>
+</div>
 
-    <!-- Submit Button -->
-    <div>
-        <button type="submit">Sign Up</button>
-    </div>
+<!-- Bootstrap JavaScript and dependencies -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-</form:form>
-
-</body>
 <jsp:include page="footer.jsp" />
 
+</body>
 </html>

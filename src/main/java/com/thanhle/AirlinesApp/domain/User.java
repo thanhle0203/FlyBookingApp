@@ -13,16 +13,23 @@ import lombok.Data;
 @Entity
 @Data
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userId")
+@Table(name = "users", uniqueConstraints = {
+	    @UniqueConstraint(columnNames = "username"),
+	    @UniqueConstraint(columnNames = "email")
+	})
 public class User {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Id
 	private Long userId;
 	
-	@NotEmpty
+	@Column(nullable = false, unique = true)
 	private String username;
 	
 	@NotEmpty
 	private String password;
+	
+	@Column(nullable = false, unique = true)
+	private String email;
 	
 	@JoinTable(
 			name="user_role", 
@@ -32,10 +39,6 @@ public class User {
 	//@JsonManagedReference
 	private List<Role> roles = new ArrayList<>();
 	
-	
-	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY, optional = false)
-	private Passenger passenger;
-	
+
 	
 }
