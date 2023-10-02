@@ -37,7 +37,7 @@ public class User {
 			inverseJoinColumns=@JoinColumn(name="role_id"))
 	@ManyToMany(fetch=FetchType.EAGER, cascade=CascadeType.PERSIST)
 	//@JsonManagedReference
-	private List<Role> roles = new ArrayList<>();
+	private Set<Role> roles = new HashSet<>();
 	
 
 	

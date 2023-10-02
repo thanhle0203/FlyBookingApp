@@ -80,6 +80,11 @@ public class ViewController {
     public String homepage() {
         return "homepage";
     }
+    
+    @GetMapping("/homepage")
+    public String homepages() {
+        return "homepage";
+    }
 
     @GetMapping("/searchFlights")
     public String searchFlights(

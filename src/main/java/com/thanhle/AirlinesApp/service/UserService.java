@@ -13,6 +13,7 @@ public interface UserService {
     User save(User user);
     void deleteById(Long id);
 	User findByEmail(String email);
+	boolean checkPassword(User user, String password);
 
 
 }

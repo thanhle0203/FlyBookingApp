@@ -24,6 +24,6 @@ public class Role {
 	
 	@ManyToMany(mappedBy="roles")
 	//@JsonBackReference
-	private List<User> users = new ArrayList<>();
+	private Set<User> users = new HashSet<>();
 	
 }
