@@ -5,6 +5,7 @@ import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -18,14 +19,15 @@ import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
 @PropertySource(value="classpath:db.properties")
+@ComponentScan
 public class AppConfig {
 	@Autowired
 	Environment env;
 	
-	@Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+	//@Bean
+    //public BCryptPasswordEncoder passwordEncoder() {
+        //return new BCryptPasswordEncoder();
+    //}
 	
 	@Bean
 	public DriverManagerDataSource dataSource() {
@@ -71,6 +73,11 @@ public class AppConfig {
 		viewResolver.setSuffix(".jsp");
 		viewResolver.setViewClass(JstlView.class);
 		return viewResolver;
+	}
+	
+	@Bean
+	public BCryptPasswordEncoder bCryptPasswordEncoder() {
+		return new BCryptPasswordEncoder();
 	}
 
 }

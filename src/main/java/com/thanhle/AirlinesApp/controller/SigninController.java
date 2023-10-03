@@ -36,7 +36,7 @@ public class SigninController {
         if (user != null && userService.checkPassword(user, signInForm.getPassword())) {
             // Optionally, add a message to the model to be displayed in the view
             redirectAttributes.addFlashAttribute("message", "Signin successful");
-            return "redirect:/";  // Redirect to home page
+            return "redirect:/homepage";  // Redirect to home page
         }
 
         redirectAttributes.addFlashAttribute("error", "Invalid email or password");

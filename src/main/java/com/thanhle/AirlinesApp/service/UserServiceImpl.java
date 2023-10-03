@@ -1,16 +1,10 @@
 package com.thanhle.AirlinesApp.service;
 
-import com.thanhle.AirlinesApp.domain.Passenger;
-import com.thanhle.AirlinesApp.domain.Role;
 import com.thanhle.AirlinesApp.domain.User;
-import com.thanhle.AirlinesApp.repository.PassengerRepository;
-import com.thanhle.AirlinesApp.repository.RoleRepository;
 import com.thanhle.AirlinesApp.repository.UserRepository;
 
-import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,26 +12,21 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
+@ComponentScan
 public class UserServiceImpl implements UserService {
 	
-	@Autowired 
-	private BCryptPasswordEncoder passwordEncoder;
+	//@Autowired UserRepository userRepository;
+	//@Autowired BCryptPasswordEncoder passwordEncoder;
+	
+	private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
     
-    @Autowired
-    public PassengerRepository passengerRepository;
-
-    @Autowired
-    public RoleRepository roleRepository;
-
-    @Autowired
-    public UserRepository userRepository;
-    
-    @Autowired
-    private EntityManager entityManager;
-
-  
-
     @Override
     public List<User> findAll() {
         return userRepository.findAll();
@@ -56,7 +45,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User user) {
-    	user.setPassword(passwordEncoder.encode(user.getPassword()));
+    	String encryptedPassword = passwordEncoder.encode(user.getPassword());
+    	user.setPassword(encryptedPassword);
         return userRepository.save(user);
     }
 
@@ -74,6 +64,7 @@ public class UserServiceImpl implements UserService {
 	public boolean checkPassword(User user, String password) {
 		return passwordEncoder.matches(password, user.getPassword());
 	}
+	
 
 
 

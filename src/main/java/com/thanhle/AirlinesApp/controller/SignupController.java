@@ -71,7 +71,7 @@ public class SignupController {
     	
     	// If signup is successful, redirect to the login page
         redirectAttributes.addFlashAttribute("message", "Signup successful");
-        return "redirect:/login";
+        return "redirect:/signin";
     }
 
     // ...
