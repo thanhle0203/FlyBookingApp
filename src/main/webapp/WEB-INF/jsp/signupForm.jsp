@@ -1,4 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -46,6 +48,9 @@
                 </select>
             </div>
         </div>
+
+        <!-- CSRF Token -->
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 
         <!-- Submit Button -->
         <div class="form-group row">

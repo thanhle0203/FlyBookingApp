@@ -3,6 +3,8 @@ package com.thanhle.AirlinesApp.service;
 import com.thanhle.AirlinesApp.domain.Flight;
 import com.thanhle.AirlinesApp.domain.Passenger;
 import com.thanhle.AirlinesApp.domain.Reservation;
+import com.thanhle.AirlinesApp.domain.User;
+
 import java.util.List;
 
 public interface ReservationService {
@@ -15,5 +17,7 @@ public interface ReservationService {
 	//Reservation createReservation(Long flightId, int numOfPassengers);
 	Reservation updateReservation(Reservation reservation);
 	Reservation getReservationByFlightId(Long flightId);
-	Reservation createReservation(Long flightId, int numOfPassengers, List<Passenger> passengerForm);
+	//Reservation createReservation(Long flightId, int numOfPassengers, List<Passenger> passengerForm);
+	List<Reservation> findByUserEmailAndPassengerEmail(String userEmail, String passengerEmail);
+	Reservation createReservation(Long flightId, int numOfPassengers, List<Passenger> passengerForm, User user);
 }

@@ -32,5 +32,10 @@ public class Reservation {
 	private Flight flight;
 	
 	private LocalDateTime dateOfBooking = LocalDateTime.now();
+	
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User user;
+	
 
 }

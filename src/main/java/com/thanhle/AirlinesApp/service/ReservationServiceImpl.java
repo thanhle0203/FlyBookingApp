@@ -3,6 +3,7 @@ package com.thanhle.AirlinesApp.service;
 import com.thanhle.AirlinesApp.domain.Flight;
 import com.thanhle.AirlinesApp.domain.Passenger;
 import com.thanhle.AirlinesApp.domain.Reservation;
+import com.thanhle.AirlinesApp.domain.User;
 import com.thanhle.AirlinesApp.exception.ReservationNotFoundException;
 import com.thanhle.AirlinesApp.repository.FlightRepository;
 import com.thanhle.AirlinesApp.repository.PassengerRepository;
@@ -34,6 +35,12 @@ public class ReservationServiceImpl implements ReservationService {
     public List<Reservation> findAll() {
         return reservationRepository.findAll();
     }
+    
+    @Override
+    public List<Reservation> findByUserEmailAndPassengerEmail(String userEmail, String passengerEmail) {
+        return reservationRepository.findByUserEmailAndPassengerEmail(userEmail, passengerEmail);
+    }
+
 
     @Override
     public Reservation findById(Long id) {
@@ -45,62 +52,11 @@ public class ReservationServiceImpl implements ReservationService {
         }
     }
 
-    /*
-    @Override
-    @Transactional 
-    public Reservation createReservation(Flight flight, List<Passenger> passengers) {
-    	// ensure the flight is persisted
-    	Flight persistedFlight = flightRepository.save(flight);
-    	
-    	// ensure all passengers are persisted
-    	List<Passenger> persistedPassengers = passengerRepository.saveAll(passengers);
-    	
-    	// Create a new Reservation entity
-    	Reservation reservation = new Reservation();
-    	reservation.setFlight(persistedFlight);
-    	reservation.setPassengers(persistedPassengers);
-    	
-    	return reservationRepository.save(reservation);
-    	
-    }
-    */
-    
-    /*
+  
     
     @Override
     @Transactional 
-    public Reservation createReservation(Long flightId, int numOfPassengers) {
-        // Look up the flight using the flightId
-        Optional<Flight> optionalFlight = flightRepository.findById(flightId);
-        if (!optionalFlight.isPresent()) {
-            throw new RuntimeException("Flight not found for id - " + flightId);  // Consider using a custom exception
-        }
-        Flight persistedFlight = optionalFlight.get();
-        
-        // Create Passenger objects (assuming a simple Passenger object for this example)
-        List<Passenger> passengers = new ArrayList<>();
-        for (int i = 0; i < numOfPassengers; i++) {
-            Passenger passenger = new Passenger();
-            // Set any necessary passenger information
-            passenger.setFname(null);
-            passengers.add(passenger);
-        }
-        
-        // Ensure all passengers are persisted
-        List<Passenger> persistedPassengers = passengerRepository.saveAll(passengers);
-
-        // Create a new Reservation entity
-        Reservation reservation = new Reservation();
-        reservation.setFlight(persistedFlight);
-        reservation.setPassengers(persistedPassengers);
-        
-        return reservationRepository.save(reservation);
-    }
-    */
-    
-    @Override
-    @Transactional 
-    public Reservation createReservation(Long flightId, int numOfPassengers, List<Passenger> passengerForm) {
+    public Reservation createReservation(Long flightId, int numOfPassengers, List<Passenger> passengerForm, User user) {
         // Look up the flight using the flightId
         Optional<Flight> optionalFlight = flightRepository.findById(flightId);
         if (!optionalFlight.isPresent()) {
@@ -129,6 +85,10 @@ public class ReservationServiceImpl implements ReservationService {
         Reservation reservation = new Reservation();
         reservation.setFlight(persistedFlight);
         reservation.setPassengers(persistedPassengers);
+        
+        for (Passenger passenger : reservation.getPassengers()) {
+            passenger.setEmail(user.getEmail());
+        }
         
         return reservationRepository.save(reservation);
     }
