@@ -100,6 +100,8 @@
             <hr>
         </c:forEach>
 
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+
         <input type="submit" value="Confirm Booking" class="btn btn-primary">
     </form>
 </div>
@@ -118,7 +120,7 @@ function displayFields(selectId) {
     let index = selectId.replace("idType", ""); // Extract index from the id
 
     // Hide all related fields first
-    $(".related-fields").hile();
+    $(".related-fields").hide();
 
     // Show only the fields related to the selected value
     $("#" + selectedValue + index).show();

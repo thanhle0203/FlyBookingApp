@@ -9,6 +9,7 @@ import com.thanhle.AirlinesApp.repository.FlightRepository;
 import com.thanhle.AirlinesApp.repository.PassengerRepository;
 import com.thanhle.AirlinesApp.repository.ReservationRepository;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +38,10 @@ public class ReservationServiceImpl implements ReservationService {
     }
     
     @Override
-    public List<Reservation> findByUserEmailAndPassengerEmail(String userEmail, String passengerEmail) {
-        return reservationRepository.findByUserEmailAndPassengerEmail(userEmail, passengerEmail);
+    public List<Reservation> findByUserEmail(String email) {
+        return reservationRepository.findByUser_Email(email);
     }
+
 
 
     @Override
@@ -57,6 +59,9 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     @Transactional 
     public Reservation createReservation(Long flightId, int numOfPassengers, List<Passenger> passengerForm, User user) {
+    	// Retrieve the use from session
+    	//User user = (User) request.getSession().getAttribute("loggedInUser");
+    	
         // Look up the flight using the flightId
         Optional<Flight> optionalFlight = flightRepository.findById(flightId);
         if (!optionalFlight.isPresent()) {

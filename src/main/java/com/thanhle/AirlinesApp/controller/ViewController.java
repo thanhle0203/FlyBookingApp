@@ -1,8 +1,13 @@
 package com.thanhle.AirlinesApp.controller;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
 
 import com.thanhle.AirlinesApp.domain.Flight;
 import com.thanhle.AirlinesApp.domain.Passenger;
@@ -45,36 +51,10 @@ public class ViewController {
 	@Autowired
 	private ReservationService reservationService;
 	
-
-	/*
-	@PostMapping("/signup")
-	public String signupSubmit(@ModelAttribute SignupForm signupForm, Model model) {
-	    // Validate the form data, if necessary
-	    // ...
-
-	    // Create a new User and Role objects from the form data
-	    User newUser = new User();
-	    newUser.setUsername(signupForm.getUsername());
-	    newUser.setPassword(signupForm.getPassword());  // You'll want to hash the password before saving it
-	    newUser.setEmail(signupForm.getEmail());
-
-	    Role newRole = new Role();
-	    newRole.setRoleName(signupForm.getRole());
-	    newUser.getRoles().add(newRole);
-
-	    // Save the new User and Role to the database
-	    userService.save(newUser);  // Assumes you have a saveUser method in your UserService
-
-	    // Optionally, add a message to the model to be displayed in the view
-	    model.addAttribute("message", "Signup successful");
-
-	    // Return the name of the view to be displayed
-	    return "signupForm";  // Assumes you have a signupResult.jsp view
-	}
-	*/
-
-	
-  
+    @Autowired
+    private UserService userService;
+    
+    private static final Logger logger = LoggerFactory.getLogger(ViewController.class);
 	
     @GetMapping("/")
     public String homepage() {
@@ -82,7 +62,16 @@ public class ViewController {
     }
     
     @GetMapping("/homepage")
-    public String homepages() {
+    public String homepages(Model model, Principal principal) {
+    	
+    	if (principal != null) {
+    	    logger.info("User email: {}", principal.getName());
+    	    return "redirect:/homepage";
+    	} 
+        else {
+    	    logger.error("Principal is null");
+    	}
+    	
         return "homepage";
     }
 
@@ -129,10 +118,13 @@ public class ViewController {
     
     
     @PostMapping("/completeBooking")
-    public String completeBooking(@PathVariable Long flightId, @PathVariable("numOfPassengers") int numOfPassengers, @ModelAttribute("passengerForm") PassengerList passengerForm, Model model) {
+    public String completeBooking(@PathVariable Long flightId, @PathVariable("numOfPassengers") int numOfPassengers, @ModelAttribute("passengerForm") PassengerList passengerForm, Principal principal, Model model) {
         try {
+        	logger.info("Inside completeBooking without path variables.");
+        	User authenticatedUser = userService.findByEmail(principal.getName());
+        	
             // Create a reservation using the provided flightId and numOfPassengers
-        	Reservation savedReservation = reservationService.createReservation(flightId, numOfPassengers, passengerForm.getPassengers());
+        	Reservation savedReservation = reservationService.createReservation(flightId, numOfPassengers, passengerForm.getPassengers(), authenticatedUser);
 
             // Add reservation to model
             model.addAttribute("reservation", savedReservation);
@@ -149,11 +141,21 @@ public class ViewController {
     }
     
     @PostMapping("/completeBooking/{flightId}/{numOfPassengers}")
-    public String completeBookings(@PathVariable Long flightId, @PathVariable("numOfPassengers") int numOfPassengers, @ModelAttribute("passengerForm") PassengerList passengerForm, Model model) {
+    public String completeBookings(@PathVariable Long flightId, @PathVariable("numOfPassengers") int numOfPassengers, @ModelAttribute("passengerForm") PassengerList passengerForm, Principal principal, Model model) {
         try {
-            // Create a reservation using the provided flightId and numOfPassengers
-            Reservation savedReservation = reservationService.createReservation(flightId, numOfPassengers, passengerForm.getPassengers());
+        	logger.info("Entering completeBookings method with flightId: {} and numOfPassengers: {} ", flightId, numOfPassengers);
+        	if (principal != null) {
+        	    logger.info("User email: {}", principal.getName());
+        	} else {
+        	    logger.error("Principal is null");
+        	}
 
+        	
+        	User authenticatedUser = userService.findByEmail(principal.getName());
+        	
+            // Create a reservation using the provided flightId and numOfPassengers
+            Reservation savedReservation = reservationService.createReservation(flightId, numOfPassengers, passengerForm.getPassengers(), authenticatedUser);
+        
             // Add reservation to model
             model.addAttribute("reservation", savedReservation);
 

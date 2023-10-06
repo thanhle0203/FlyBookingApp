@@ -5,6 +5,8 @@ import com.thanhle.AirlinesApp.domain.Passenger;
 import com.thanhle.AirlinesApp.domain.Reservation;
 import com.thanhle.AirlinesApp.domain.User;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 import java.util.List;
 
 public interface ReservationService {
@@ -18,6 +20,8 @@ public interface ReservationService {
 	Reservation updateReservation(Reservation reservation);
 	Reservation getReservationByFlightId(Long flightId);
 	//Reservation createReservation(Long flightId, int numOfPassengers, List<Passenger> passengerForm);
-	List<Reservation> findByUserEmailAndPassengerEmail(String userEmail, String passengerEmail);
+
+	List<Reservation> findByUserEmail(String email);
+	//Reservation createReservation(Long flightId, int numOfPassengers, List<Passenger> passengerForm, User authenticatedUser);
 	Reservation createReservation(Long flightId, int numOfPassengers, List<Passenger> passengerForm, User user);
 }

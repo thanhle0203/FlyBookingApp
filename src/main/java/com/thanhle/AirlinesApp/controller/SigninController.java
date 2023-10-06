@@ -1,5 +1,10 @@
 package com.thanhle.AirlinesApp.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
+import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,21 +24,38 @@ public class SigninController {
 
     @Autowired
     private UserService userService;
-
+    
+    //private static final Logger logger = LoggerFactory.getLogger(ViewController.class);
+    private static final Logger logger = LoggerFactory.getLogger(SigninController.class);
+    
     @GetMapping
-    public String signIn(Model model) {
+    public String signIn(Model model, Principal principal) {
+        
+        if (principal != null) {
+    	    logger.info("User email: {}", principal.getName());
+    	    return "redirect:/homepage";
+    	} 
+        //else {
+    	    //logger.error("Principal is null");
+    	//}
+        
         model.addAttribute("signInForm", new SigninForm());
+        
         return "signinForm";  // Name of your JSP page
     }
 
     @PostMapping
     public String signInSubmit(
         @ModelAttribute SigninForm signInForm,
-        RedirectAttributes redirectAttributes) {
+        RedirectAttributes redirectAttributes,
+        Principal principal
+        ) {
 
         User user = userService.findByEmail(signInForm.getEmail());
 
         if (user != null && userService.checkPassword(user, signInForm.getPassword())) {
+        	//request.getSession().setAttribute("loggedInUser", user);
+        	
             // Optionally, add a message to the model to be displayed in the view
             redirectAttributes.addFlashAttribute("message", "Signin successful");
             return "redirect:/homepage";  // Redirect to home page

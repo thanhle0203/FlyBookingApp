@@ -14,7 +14,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 	@Query("SELECT r FROM Reservation r WHERE r.flight.id = :flightId")
     Reservation findByFlightId(@Param("flightId") Long flightId);
     
-	@Query("SELECT r FROM Reservation r JOIN r.passengers p WHERE r.user.email = :userEmail AND p.email = :passengerEmail")
-    List<Reservation> findByUserEmailAndPassengerEmail(@Param("userEmail") String userEmail, @Param("passengerEmail") String passengerEmail);
+	List<Reservation> findByUser_Email(String email);
 
 }
